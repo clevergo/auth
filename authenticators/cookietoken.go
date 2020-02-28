@@ -10,7 +10,7 @@ import (
 	"github.com/clevergo/auth"
 )
 
-// CookieToken is an authenticator that retrieves token from cookie and authenticate an user.
+// CookieToken is an authenticator that retrieves token from cookie and authenticates an user.
 type CookieToken struct {
 	param string
 	store auth.IdentityStore

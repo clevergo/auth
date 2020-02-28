@@ -13,7 +13,7 @@ import (
 )
 
 // BearerToken is an authenticator that retrieves bearer token from authorization header
-// and authenticate an user.
+// and authenticates an user.
 type BearerToken struct {
 	realm string
 	store auth.IdentityStore

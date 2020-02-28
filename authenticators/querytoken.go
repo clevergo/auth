@@ -10,7 +10,7 @@ import (
 	"github.com/clevergo/auth"
 )
 
-// QueryToken is an authenticator that retrieves token from URL query and authenticate an user.
+// QueryToken is an authenticator that retrieves token from URL query and authenticates an user.
 type QueryToken struct {
 	param string
 	store auth.IdentityStore

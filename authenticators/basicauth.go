@@ -11,7 +11,7 @@ import (
 	"github.com/clevergo/auth"
 )
 
-// BasicAuth is an authenticator that authenticate an user with the given username.
+// BasicAuth is an authenticator that authenticates an user with the given username.
 type BasicAuth struct {
 	realm    string
 	validate func(username, password string) bool
