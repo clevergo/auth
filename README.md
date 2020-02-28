@@ -5,3 +5,9 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/clevergo/auth)](https://goreportcard.com/report/github.com/clevergo/auth)
 [![Release](https://img.shields.io/github/release/clevergo/auth.svg?style=flat-square)](https://github.com/clevergo/auth/releases)
 
+## Usage
+
+
+## Credit
+
+Inspired by [Yii Auth](https://github.com/yiisoft/auth).

@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// Authenticator is an interface authenticate an user.
+// Authenticator is an interface that authenticates an user.
 type Authenticator interface {
 	// Authenticates the current user.
 	Authenticate(*http.Request) (Identity, error)
