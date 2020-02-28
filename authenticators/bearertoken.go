@@ -35,7 +35,7 @@ func (bt *BearerToken) Authenticate(r *http.Request) (auth.Identity, error) {
 		return nil, ErrNoCredentials
 	}
 
-	return bt.store.GetIdentityByToken(token, bt)
+	return bt.store.GetIdentityByToken(token)
 }
 
 // Challenge implements Authenticator.Challenge.

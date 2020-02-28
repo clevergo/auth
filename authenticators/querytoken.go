@@ -28,7 +28,7 @@ func (qt *QueryToken) Authenticate(r *http.Request) (auth.Identity, error) {
 		return nil, ErrNoCredentials
 	}
 
-	return qt.store.GetIdentityByToken(token, qt)
+	return qt.store.GetIdentityByToken(token)
 }
 
 // Challenge implements Authenticator.Challenge.

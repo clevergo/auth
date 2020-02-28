@@ -35,7 +35,7 @@ func (ct *CookieToken) Authenticate(r *http.Request) (auth.Identity, error) {
 		return nil, ErrNoCredentials
 	}
 
-	return ct.store.GetIdentityByToken(cookie.Value, ct)
+	return ct.store.GetIdentityByToken(cookie.Value)
 }
 
 // Challenge implements Authenticator.Challenge.
