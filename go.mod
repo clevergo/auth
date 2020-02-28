@@ -1,3 +1,3 @@
-module github.com/clevergo/____
+module github.com/clevergo/auth
 
 go 1.13
