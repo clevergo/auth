@@ -9,7 +9,7 @@ type Identity interface {
 	GetID() string
 }
 
-// IdentityStore is a store interface that
+// IdentityStore is a store interface for retrieving identity by ID or token.
 type IdentityStore interface {
 	// Gets identity by ID.
 	GetIdentity(id string) (Identity, error)
