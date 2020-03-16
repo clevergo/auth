@@ -15,13 +15,13 @@ import (
 // BearerToken is an authenticator that retrieves bearer token from authorization header
 // and authenticates an user.
 type BearerToken struct {
+	*authenticator
 	realm string
-	store auth.IdentityStore
 }
 
 // NewBearerToken returns an instance of BearerToken authticator.
 func NewBearerToken(realm string, store auth.IdentityStore) *BearerToken {
-	return &BearerToken{realm: realm, store: store}
+	return &BearerToken{realm: realm, authenticator: newAuthenticator(store)}
 }
 
 // Authenticate implements Authenticator.Authenticate.
@@ -35,7 +35,7 @@ func (bt *BearerToken) Authenticate(r *http.Request) (auth.Identity, error) {
 		return nil, ErrNoCredentials
 	}
 
-	return bt.store.GetIdentityByToken(token)
+	return bt.GetIdentityByToken(token)
 }
 
 // Challenge implements Authenticator.Challenge.

@@ -13,17 +13,17 @@ import (
 
 // BasicAuth is an authenticator that authenticates an user with the given username.
 type BasicAuth struct {
+	*authenticator
 	realm    string
 	validate func(username, password string) bool
-	store    auth.IdentityStore
 }
 
 // NewBasicAuth returns an instance of BasicAuth authticator.
 func NewBasicAuth(realm string, validate func(username, password string) bool, store auth.IdentityStore) *BasicAuth {
 	return &BasicAuth{
-		realm:    realm,
-		validate: validate,
-		store:    store,
+		authenticator: newAuthenticator(store),
+		realm:         realm,
+		validate:      validate,
 	}
 }
 
@@ -34,7 +34,7 @@ func (ba *BasicAuth) Authenticate(r *http.Request) (auth.Identity, error) {
 		return nil, ErrNoCredentials
 	}
 
-	return ba.store.GetIdentityByToken(username)
+	return ba.GetIdentityByToken(username)
 }
 
 // Challenge implements Authenticator.Challenge.

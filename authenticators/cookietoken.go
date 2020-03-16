@@ -12,15 +12,15 @@ import (
 
 // CookieToken is an authenticator that retrieves token from cookie and authenticates an user.
 type CookieToken struct {
+	*authenticator
 	param string
-	store auth.IdentityStore
 }
 
 // NewCookieToken returns an instance of CookieToken authenticator.
 func NewCookieToken(param string, store auth.IdentityStore) *CookieToken {
 	return &CookieToken{
-		param: param,
-		store: store,
+		param:         param,
+		authenticator: newAuthenticator(store),
 	}
 }
 
@@ -35,7 +35,7 @@ func (ct *CookieToken) Authenticate(r *http.Request) (auth.Identity, error) {
 		return nil, ErrNoCredentials
 	}
 
-	return ct.store.GetIdentityByToken(cookie.Value)
+	return ct.GetIdentityByToken(cookie.Value)
 }
 
 // Challenge implements Authenticator.Challenge.

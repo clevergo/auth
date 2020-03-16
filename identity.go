@@ -15,5 +15,5 @@ type IdentityStore interface {
 	GetIdentity(id string) (Identity, error)
 
 	// Gets identity by the given token and token type.
-	GetIdentityByToken(token string) (Identity, error)
+	GetIdentityByToken(token, tokenType string) (Identity, error)
 }

@@ -12,13 +12,13 @@ import (
 
 // QueryToken is an authenticator that retrieves token from URL query and authenticates an user.
 type QueryToken struct {
+	*authenticator
 	param string
-	store auth.IdentityStore
 }
 
 // NewQueryToken returns a instance of QueryToken authenticator.
 func NewQueryToken(param string, store auth.IdentityStore) *QueryToken {
-	return &QueryToken{param: param, store: store}
+	return &QueryToken{authenticator: newAuthenticator(store), param: param}
 }
 
 // Authenticate implements Authenticator.Authenticate.
@@ -28,7 +28,7 @@ func (qt *QueryToken) Authenticate(r *http.Request) (auth.Identity, error) {
 		return nil, ErrNoCredentials
 	}
 
-	return qt.store.GetIdentityByToken(token)
+	return qt.GetIdentityByToken(token)
 }
 
 // Challenge implements Authenticator.Challenge.
