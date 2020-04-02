@@ -6,6 +6,7 @@ package authenticators
 
 import (
 	"errors"
+	"log"
 	"net/http"
 
 	"github.com/clevergo/auth"
@@ -29,14 +30,15 @@ func NewComposite(authenticators ...auth.Authenticator) *Composite {
 }
 
 // Authenticate implements Authenticator.Authenticate.
-func (c *Composite) Authenticate(r *http.Request) (auth.Identity, error) {
+func (c *Composite) Authenticate(r *http.Request) (identity auth.Identity, err error) {
 	for _, authenticator := range c.authenticators {
-		if identity, err := authenticator.Authenticate(r); err == nil {
-			return identity, nil
+		if identity, err = authenticator.Authenticate(r); err == nil {
+			return
 		}
+		log.Println(err)
 	}
 
-	return nil, ErrNoCredentials
+	return
 }
 
 // Challenge implements Challenge.Authenticate.
