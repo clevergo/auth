@@ -6,8 +6,8 @@ package authenticators
 
 import (
 	"errors"
-	"log"
 	"net/http"
+	"strings"
 
 	"github.com/clevergo/auth"
 )
@@ -16,6 +16,18 @@ import (
 var (
 	ErrNoCredentials = errors.New("no credentials provided")
 )
+
+type CompositeError struct {
+	errs []error
+}
+
+func (e CompositeError) Error() (s string) {
+	errs := make([]string, len(e.errs))
+	for i, err := range e.errs {
+		errs[i] = err.Error()
+	}
+	return strings.Join(errs, "; ")
+}
 
 // Composite is a set of authenticators.
 type Composite struct {
@@ -30,15 +42,17 @@ func NewComposite(authenticators ...auth.Authenticator) *Composite {
 }
 
 // Authenticate implements Authenticator.Authenticate.
-func (c *Composite) Authenticate(r *http.Request) (identity auth.Identity, err error) {
+func (c *Composite) Authenticate(r *http.Request) (auth.Identity, error) {
+	var errs []error
 	for _, authenticator := range c.authenticators {
-		if identity, err = authenticator.Authenticate(r); err == nil {
-			return
+		identity, err := authenticator.Authenticate(r)
+		if err == nil {
+			return identity, nil
 		}
-		log.Println(err)
+		errs = append(errs, err)
 	}
 
-	return
+	return nil, CompositeError{errs: errs}
 }
 
 // Challenge implements Challenge.Authenticate.
