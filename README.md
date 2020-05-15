@@ -5,8 +5,11 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/clevergo/auth)](https://goreportcard.com/report/github.com/clevergo/auth)
 [![Release](https://img.shields.io/github/release/clevergo/auth.svg?style=flat-square)](https://github.com/clevergo/auth/releases)
 
+This package provides multiple authenticators and middleware for authenticating a user.
+
 ## Usage
 
+See [example](example).
 
 ## Credit
 
