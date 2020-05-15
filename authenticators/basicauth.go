@@ -13,6 +13,8 @@ import (
 
 var _ auth.Authenticator = &BasicAuth{}
 
+// BasicAuthValidator is a function that validates the given username and
+// password is valid or not.
 type BasicAuthValidator func(username, password string) bool
 
 // BasicAuth is an authenticator that authenticates an user with the given username.

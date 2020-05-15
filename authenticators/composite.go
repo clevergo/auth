@@ -11,10 +11,12 @@ import (
 	"github.com/clevergo/auth"
 )
 
+// CompositeError contains errors that returned by authenticators.
 type CompositeError struct {
 	errs []error
 }
 
+// Error returns error message.
 func (e CompositeError) Error() (s string) {
 	errs := make([]string, len(e.errs))
 	for i, err := range e.errs {
