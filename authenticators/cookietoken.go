@@ -36,11 +36,7 @@ func NewCookieTokenParam(store auth.IdentityStore, param string) *CookieToken {
 // Authenticate implements Authenticator.Authenticate.
 func (a *CookieToken) Authenticate(r *http.Request, w http.ResponseWriter) (auth.Identity, error) {
 	cookie, err := r.Cookie(a.param)
-	if err != nil {
-		return nil, err
-	}
-
-	if cookie.Value == "" {
+	if err == http.ErrNoCookie || cookie.Value == "" {
 		return nil, auth.ErrNoCredentials
 	}
 

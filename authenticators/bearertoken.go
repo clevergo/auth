@@ -12,6 +12,10 @@ import (
 	"github.com/clevergo/auth"
 )
 
+const (
+	bearerPrefix = "Bearer "
+)
+
 var _ auth.Authenticator = &BearerToken{}
 
 // BearerToken is an authenticator that retrieves bearer token from authorization header
@@ -53,10 +57,9 @@ func (a *BearerToken) Challenge(r *http.Request, w http.ResponseWriter) {
 }
 
 func (a *BearerToken) parseBearerToken(header string) (token string, ok bool) {
-	const prefix = "Bearer "
-	if len(header) < len(prefix) || !strings.EqualFold(header[:len(prefix)], prefix) {
+	if len(header) <= len(bearerPrefix) || !strings.EqualFold(header[:len(bearerPrefix)], bearerPrefix) {
 		return
 	}
 
-	return header[len(prefix):], true
+	return header[len(bearerPrefix):], true
 }
