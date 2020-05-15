@@ -4,12 +4,19 @@
 
 package authenticators
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestNewBearerToken(t *testing.T) {
-	realm := "token"
-	bt := NewBearerToken(realm, nil)
-	if bt.realm != realm {
-		t.Errorf("expected realm %q, got %q", realm, bt.realm)
-	}
+	a := NewBearerToken(nil)
+	assert.Equal(t, defaultRealm, a.realm)
+}
+
+func TestNewBearerTokenRealm(t *testing.T) {
+	realm := "foobar"
+	a := NewBearerTokenRealm(nil, realm)
+	assert.Equal(t, realm, a.realm)
 }

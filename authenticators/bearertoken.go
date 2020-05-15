@@ -12,6 +12,8 @@ import (
 	"github.com/clevergo/auth"
 )
 
+var _ auth.Authenticator = &BearerToken{}
+
 // BearerToken is an authenticator that retrieves bearer token from authorization header
 // and authenticates an user.
 type BearerToken struct {
@@ -19,31 +21,38 @@ type BearerToken struct {
 	realm string
 }
 
-// NewBearerToken returns an instance of BearerToken authticator.
-func NewBearerToken(realm string, store auth.IdentityStore) *BearerToken {
+// NewBearerToken returns an instance of BearerToken authticator with the given store
+// and default realm.
+func NewBearerToken(store auth.IdentityStore) *BearerToken {
+	return NewBearerTokenRealm(store, defaultRealm)
+}
+
+// NewBearerTokenRealm returns an instance of BearerToken authticator with the given
+// store and realm.
+func NewBearerTokenRealm(store auth.IdentityStore, realm string) *BearerToken {
 	return &BearerToken{realm: realm, authenticator: newAuthenticator(store)}
 }
 
 // Authenticate implements Authenticator.Authenticate.
-func (bt *BearerToken) Authenticate(r *http.Request) (auth.Identity, error) {
+func (a *BearerToken) Authenticate(r *http.Request, w http.ResponseWriter) (auth.Identity, error) {
 	header := r.Header.Get("Authorization")
 	if header == "" {
-		return nil, ErrNoCredentials
+		return nil, auth.ErrNoCredentials
 	}
-	token, ok := bt.parseBearerToken(header)
+	token, ok := a.parseBearerToken(header)
 	if !ok {
-		return nil, ErrNoCredentials
+		return nil, auth.ErrInvalidCredentials
 	}
 
-	return bt.GetIdentityByToken(token)
+	return a.GetIdentityByToken(token)
 }
 
 // Challenge implements Authenticator.Challenge.
-func (bt *BearerToken) Challenge(w http.ResponseWriter) {
-	w.Header().Set("WWW-Authenticate", fmt.Sprintf(`Authorization realm="%s"`, bt.realm))
+func (a *BearerToken) Challenge(r *http.Request, w http.ResponseWriter) {
+	w.Header().Set("WWW-Authenticate", fmt.Sprintf(`Authorization realm="%s"`, a.realm))
 }
 
-func (bt *BearerToken) parseBearerToken(header string) (token string, ok bool) {
+func (a *BearerToken) parseBearerToken(header string) (token string, ok bool) {
 	const prefix = "Bearer "
 	if len(header) < len(prefix) || !strings.EqualFold(header[:len(prefix)], prefix) {
 		return

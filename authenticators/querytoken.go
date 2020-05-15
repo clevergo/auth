@@ -10,27 +10,36 @@ import (
 	"github.com/clevergo/auth"
 )
 
+var _ auth.Authenticator = &QueryToken{}
+
 // QueryToken is an authenticator that retrieves token from URL query and authenticates an user.
 type QueryToken struct {
 	*authenticator
 	param string
 }
 
-// NewQueryToken returns a instance of QueryToken authenticator.
-func NewQueryToken(param string, store auth.IdentityStore) *QueryToken {
+// NewQueryToken returns an instance of QueryToken authenticator with the given identity
+// store and default token param.
+func NewQueryToken(store auth.IdentityStore) *QueryToken {
+	return NewQueryTokenParam(store, defaultTokenParam)
+}
+
+// NewQueryTokenParam returns an instance of QueryToken authenticator with the given identity
+// store and param.
+func NewQueryTokenParam(store auth.IdentityStore, param string) *QueryToken {
 	return &QueryToken{authenticator: newAuthenticator(store), param: param}
 }
 
 // Authenticate implements Authenticator.Authenticate.
-func (qt *QueryToken) Authenticate(r *http.Request) (auth.Identity, error) {
-	token := r.URL.Query().Get(qt.param)
+func (a *QueryToken) Authenticate(r *http.Request, w http.ResponseWriter) (auth.Identity, error) {
+	token := r.URL.Query().Get(a.param)
 	if token == "" {
-		return nil, ErrNoCredentials
+		return nil, auth.ErrNoCredentials
 	}
 
-	return qt.GetIdentityByToken(token)
+	return a.GetIdentityByToken(token)
 }
 
 // Challenge implements Authenticator.Challenge.
-func (qt *QueryToken) Challenge(w http.ResponseWriter) {
+func (a *QueryToken) Challenge(r *http.Request, w http.ResponseWriter) {
 }

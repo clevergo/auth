@@ -10,14 +10,23 @@ import (
 	"github.com/clevergo/auth"
 )
 
+var _ auth.Authenticator = &CookieToken{}
+
 // CookieToken is an authenticator that retrieves token from cookie and authenticates an user.
 type CookieToken struct {
 	*authenticator
 	param string
 }
 
-// NewCookieToken returns an instance of CookieToken authenticator.
-func NewCookieToken(param string, store auth.IdentityStore) *CookieToken {
+// NewCookieToken returns an instance of CookieToken authenticator with the given store
+// and default token param.
+func NewCookieToken(store auth.IdentityStore) *CookieToken {
+	return NewCookieTokenParam(store, defaultTokenParam)
+}
+
+// NewCookieTokenParam returns an instance of CookieToken authenticator with the given store
+// and param.
+func NewCookieTokenParam(store auth.IdentityStore, param string) *CookieToken {
 	return &CookieToken{
 		param:         param,
 		authenticator: newAuthenticator(store),
@@ -25,19 +34,19 @@ func NewCookieToken(param string, store auth.IdentityStore) *CookieToken {
 }
 
 // Authenticate implements Authenticator.Authenticate.
-func (ct *CookieToken) Authenticate(r *http.Request) (auth.Identity, error) {
-	cookie, err := r.Cookie(ct.param)
+func (a *CookieToken) Authenticate(r *http.Request, w http.ResponseWriter) (auth.Identity, error) {
+	cookie, err := r.Cookie(a.param)
 	if err != nil {
 		return nil, err
 	}
 
 	if cookie.Value == "" {
-		return nil, ErrNoCredentials
+		return nil, auth.ErrNoCredentials
 	}
 
-	return ct.GetIdentityByToken(cookie.Value)
+	return a.GetIdentityByToken(cookie.Value)
 }
 
 // Challenge implements Authenticator.Challenge.
-func (ct *CookieToken) Challenge(http.ResponseWriter) {
+func (a *CookieToken) Challenge(r *http.Request, w http.ResponseWriter) {
 }

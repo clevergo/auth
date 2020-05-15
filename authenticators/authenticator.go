@@ -4,6 +4,11 @@ import (
 	"github.com/clevergo/auth"
 )
 
+var (
+	defaultTokenParam = "access_token"
+	defaultRealm      = "api"
+)
+
 type authenticator struct {
 	store     auth.IdentityStore
 	tokenType string

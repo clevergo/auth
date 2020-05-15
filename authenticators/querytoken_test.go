@@ -4,12 +4,19 @@
 
 package authenticators
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestNewQueryToken(t *testing.T) {
+	a := NewQueryToken(nil)
+	assert.Equal(t, defaultTokenParam, a.param)
+}
+
+func TestNewQueryTokenParam(t *testing.T) {
 	param := "token"
-	qt := NewQueryToken(param, nil)
-	if qt.param != param {
-		t.Errorf("expected param %q, got %q", param, qt.param)
-	}
+	a := NewQueryTokenParam(nil, param)
+	assert.Equal(t, param, a.param)
 }

@@ -11,8 +11,8 @@ import (
 // Authenticator is an interface that authenticates an user.
 type Authenticator interface {
 	// Authenticates the current user.
-	Authenticate(*http.Request) (Identity, error)
+	Authenticate(*http.Request, http.ResponseWriter) (Identity, error)
 
 	// Challenge generates challenges upon authentication failure.
-	Challenge(http.ResponseWriter)
+	Challenge(*http.Request, http.ResponseWriter)
 }

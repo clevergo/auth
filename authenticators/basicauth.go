@@ -11,33 +11,45 @@ import (
 	"github.com/clevergo/auth"
 )
 
+var _ auth.Authenticator = &BasicAuth{}
+
+type BasicAuthValidator func(username, password string) bool
+
 // BasicAuth is an authenticator that authenticates an user with the given username.
 type BasicAuth struct {
 	*authenticator
-	realm    string
-	validate func(username, password string) bool
+	realm     string
+	validator BasicAuthValidator
 }
 
 // NewBasicAuth returns an instance of BasicAuth authticator.
-func NewBasicAuth(realm string, validate func(username, password string) bool, store auth.IdentityStore) *BasicAuth {
+func NewBasicAuth(store auth.IdentityStore, validator BasicAuthValidator) *BasicAuth {
+	return NewBasicAuthRealm(store, validator, defaultRealm)
+}
+
+// NewBasicAuthRealm returns an instance of BasicAuth authticator.
+func NewBasicAuthRealm(store auth.IdentityStore, validator BasicAuthValidator, realm string) *BasicAuth {
 	return &BasicAuth{
 		authenticator: newAuthenticator(store),
+		validator:     validator,
 		realm:         realm,
-		validate:      validate,
 	}
 }
 
 // Authenticate implements Authenticator.Authenticate.
-func (ba *BasicAuth) Authenticate(r *http.Request) (auth.Identity, error) {
+func (a *BasicAuth) Authenticate(r *http.Request, w http.ResponseWriter) (auth.Identity, error) {
 	username, password, ok := r.BasicAuth()
-	if !ok || !ba.validate(username, password) {
-		return nil, ErrNoCredentials
+	if !ok {
+		return nil, auth.ErrNoCredentials
+	}
+	if !a.validator(username, password) {
+		return nil, auth.ErrInvalidCredentials
 	}
 
-	return ba.GetIdentityByToken(username)
+	return a.GetIdentityByToken(username)
 }
 
 // Challenge implements Authenticator.Challenge.
-func (ba *BasicAuth) Challenge(w http.ResponseWriter) {
-	w.Header().Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="%s"`, ba.realm))
+func (a *BasicAuth) Challenge(r *http.Request, w http.ResponseWriter) {
+	w.Header().Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="%s"`, a.realm))
 }

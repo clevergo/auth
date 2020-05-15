@@ -4,12 +4,19 @@
 
 package authenticators
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestNewCookieToken(t *testing.T) {
+	a := NewCookieToken(nil)
+	assert.Equal(t, defaultTokenParam, a.param)
+}
+
+func TestNewCookieTokenParam(t *testing.T) {
 	param := "token"
-	ct := NewCookieToken(param, nil)
-	if ct.param != param {
-		t.Errorf("expected param %q, got %q", param, ct.param)
-	}
+	a := NewCookieTokenParam(nil, param)
+	assert.Equal(t, param, a.param)
 }
