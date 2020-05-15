@@ -51,3 +51,9 @@ func TestQueryTokenAuthenticate(t *testing.T) {
 		assert.Equal(t, test.token, identity.GetID())
 	}
 }
+
+func TestQueryTokenChallenge(t *testing.T) {
+	a := NewQueryToken(nil)
+	w := httptest.NewRecorder()
+	a.Challenge(nil, w)
+}

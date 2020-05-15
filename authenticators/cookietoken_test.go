@@ -54,3 +54,9 @@ func TestCookieTokenAuthenticate(t *testing.T) {
 		assert.Equal(t, test.token, identity.GetID())
 	}
 }
+
+func TestCookieTokenChallenge(t *testing.T) {
+	a := NewCookieToken(nil)
+	w := httptest.NewRecorder()
+	a.Challenge(nil, w)
+}
