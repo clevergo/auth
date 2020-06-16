@@ -48,7 +48,7 @@ func (a *BasicAuth) Authenticate(r *http.Request, w http.ResponseWriter) (auth.I
 		return nil, auth.ErrInvalidCredentials
 	}
 
-	return a.GetIdentityByToken(username)
+	return a.GetIdentityByToken(r.Context(), username)
 }
 
 // Challenge implements Authenticator.Challenge.

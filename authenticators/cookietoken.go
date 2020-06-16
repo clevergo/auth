@@ -40,7 +40,7 @@ func (a *CookieToken) Authenticate(r *http.Request, w http.ResponseWriter) (auth
 		return nil, auth.ErrNoCredentials
 	}
 
-	return a.GetIdentityByToken(cookie.Value)
+	return a.GetIdentityByToken(r.Context(), cookie.Value)
 }
 
 // Challenge implements Authenticator.Challenge.

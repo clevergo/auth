@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -52,7 +53,7 @@ type store struct {
 
 var errNoUser = errors.New("user does not exist")
 
-func (s *store) GetIdentity(id string) (auth.Identity, error) {
+func (s *store) GetIdentity(ctx context.Context, id string) (auth.Identity, error) {
 	for _, u := range s.users {
 		if u.id == id {
 			return u, nil
@@ -62,7 +63,7 @@ func (s *store) GetIdentity(id string) (auth.Identity, error) {
 	return nil, errNoUser
 }
 
-func (s *store) GetIdentityByToken(token, tokenType string) (auth.Identity, error) {
+func (s *store) GetIdentityByToken(ctx context.Context, token, tokenType string) (auth.Identity, error) {
 	for _, u := range s.users {
 		if u.token == token {
 			return u, nil

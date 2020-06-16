@@ -5,6 +5,7 @@
 package authenticators
 
 import (
+	"context"
 	"testing"
 
 	"github.com/clevergo/auth"
@@ -22,11 +23,11 @@ func (i *nullIdentity) GetID() string {
 type nullStore struct {
 }
 
-func (nullStore) GetIdentity(id string) (auth.Identity, error) {
+func (nullStore) GetIdentity(ctx context.Context, id string) (auth.Identity, error) {
 	return &nullIdentity{id}, nil
 }
 
-func (nullStore) GetIdentityByToken(token, tokenType string) (auth.Identity, error) {
+func (nullStore) GetIdentityByToken(ctx context.Context, token, tokenType string) (auth.Identity, error) {
 	return &nullIdentity{token}, nil
 }
 
@@ -40,6 +41,6 @@ func TestAuthenticatorSetToken(t *testing.T) {
 func TestAuthenticatorGetIdentityByToken(t *testing.T) {
 	a := &authenticator{store: &nullStore{}}
 	token := "foobar"
-	identity, _ := a.GetIdentityByToken(token)
+	identity, _ := a.GetIdentityByToken(nil, token)
 	assert.Equal(t, token, identity.GetID())
 }

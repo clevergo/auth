@@ -37,7 +37,7 @@ func (a *QueryToken) Authenticate(r *http.Request, w http.ResponseWriter) (auth.
 		return nil, auth.ErrNoCredentials
 	}
 
-	return a.GetIdentityByToken(token)
+	return a.GetIdentityByToken(r.Context(), token)
 }
 
 // Challenge implements Authenticator.Challenge.

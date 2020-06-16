@@ -1,6 +1,8 @@
 package authenticators
 
 import (
+	"context"
+
 	"github.com/clevergo/auth"
 )
 
@@ -22,6 +24,6 @@ func (a *authenticator) SetTokenType(v string) {
 	a.tokenType = v
 }
 
-func (a *authenticator) GetIdentityByToken(token string) (auth.Identity, error) {
-	return a.store.GetIdentityByToken(token, a.tokenType)
+func (a *authenticator) GetIdentityByToken(ctx context.Context, token string) (auth.Identity, error) {
+	return a.store.GetIdentityByToken(ctx, token, a.tokenType)
 }

@@ -4,6 +4,8 @@
 
 package auth
 
+import "context"
+
 // Identity is an interface that should be implemented by an user instance.
 type Identity interface {
 	GetID() string
@@ -12,8 +14,8 @@ type Identity interface {
 // IdentityStore is a store interface for retrieving identity by ID or token.
 type IdentityStore interface {
 	// Gets identity by ID.
-	GetIdentity(id string) (Identity, error)
+	GetIdentity(ctx context.Context, id string) (Identity, error)
 
 	// Gets identity by the given token and token type.
-	GetIdentityByToken(token, tokenType string) (Identity, error)
+	GetIdentityByToken(ctx context.Context, token, tokenType string) (Identity, error)
 }

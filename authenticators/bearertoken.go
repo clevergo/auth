@@ -48,7 +48,7 @@ func (a *BearerToken) Authenticate(r *http.Request, w http.ResponseWriter) (auth
 		return nil, auth.ErrInvalidCredentials
 	}
 
-	return a.GetIdentityByToken(token)
+	return a.GetIdentityByToken(r.Context(), token)
 }
 
 // Challenge implements Authenticator.Challenge.
