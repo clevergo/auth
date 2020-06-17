@@ -3,7 +3,7 @@ package authenticators
 import (
 	"context"
 
-	"github.com/clevergo/auth"
+	"clevergo.tech/auth"
 )
 
 var (

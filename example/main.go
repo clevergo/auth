@@ -7,8 +7,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/clevergo/auth"
-	"github.com/clevergo/auth/authenticators"
+	"clevergo.tech/auth"
+	"clevergo.tech/auth/authenticators"
 )
 
 var authenticator auth.Authenticator

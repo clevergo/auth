@@ -11,7 +11,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/clevergo/auth"
+	"clevergo.tech/auth"
 	"github.com/stretchr/testify/assert"
 )
 

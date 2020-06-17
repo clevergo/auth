@@ -1,4 +1,4 @@
-module github.com/clevergo/auth
+module clevergo.tech/auth
 
 go 1.13
 

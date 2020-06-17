@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/clevergo/auth"
+	"clevergo.tech/auth"
 )
 
 var _ auth.Authenticator = &BasicAuth{}

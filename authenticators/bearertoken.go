@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/clevergo/auth"
+	"clevergo.tech/auth"
 )
 
 const (

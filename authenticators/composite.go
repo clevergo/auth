@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/clevergo/auth"
+	"clevergo.tech/auth"
 )
 
 // CompositeError contains errors that returned by authenticators.
