@@ -4,6 +4,7 @@
 [![Go.Dev reference](https://img.shields.io/badge/go.dev-reference-blue?logo=go&logoColor=white&style=for-the-badge)](https://pkg.go.dev/clevergo.tech/auth?tab=doc)
 [![Go Report Card](https://goreportcard.com/badge/clevergo.tech/auth?style=for-the-badge)](https://goreportcard.com/report/clevergo.tech/auth)
 [![Release](https://img.shields.io/github/release/clevergo/auth.svg?style=for-the-badge)](https://github.com/clevergo/auth/releases)
+[![Downloads](https://img.shields.io/endpoint?url=https://pkg.clevergo.tech/api/badges/downloads/month/clevergo.tech/auth&style=for-the-badge)](https://pkg.clevergo.tech/)
 
 This package provides multiple authenticators and middleware for authenticating a user.
 
